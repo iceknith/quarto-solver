@@ -16,7 +16,8 @@ Our way of storing quarto boards. It contains 5 bitboards:
 for each property bitboard (the 4 last ones) can obtain its opposite bitboards, by doing an XOR with `occupation`
 
 The class also stores the **available stones**
-For that we have an `availableStones` array, that contains maximum 16 items.
+For that we have an `availableStones` u_int16, that contains maximum 16 items.
+A 0 means that the stone is available, a 1 means that it isn't.
 
 A stone is a 4 bit int that is encoded this way:
 1) 0 -> is square / 1 -> is circle

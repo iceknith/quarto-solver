@@ -4,10 +4,10 @@
 #include <chrono>
 
 int bestMovePick(const QuartoBoard *b) {
-    return bestMovePick(b, (int) b->availableStoneCount);
+    return bestMovePick(b, b->number_of_turns());
 }
 int bestMovePlay(const QuartoBoard *b, u_int8_t stone) {
-    return bestMovePlay(b, stone, b->availableStoneCount);
+    return bestMovePlay(b, stone, b->number_of_turns());
 }
 
 int bestMovePick(const QuartoBoard *b, int explorationDepth) {
@@ -16,9 +16,11 @@ int bestMovePick(const QuartoBoard *b, int explorationDepth) {
     int alpha = -explorationDepth - 1;
     int beta = explorationDepth + 1;
     int bestMove = -1;
+    u_int16_t availableStonesIte = b->availableStones;
+
 
     for (int stone = 0; stone < 16; stone++) {
-        if (b->availableStones[stone]) {
+        if (!(availableStonesIte & 1)) {
             int eval = -negamaxPlayEvaluation(*b, stone, explorationDepth, -beta, -alpha);
 
             if (eval > alpha) {
@@ -26,6 +28,7 @@ int bestMovePick(const QuartoBoard *b, int explorationDepth) {
                 bestMove = stone;
             }
         }
+        availableStonesIte >>= 1;
     }
 
     std::cout << "pick evaluation :" << alpha << "\n";
@@ -75,9 +78,10 @@ int bestMovePlay(const QuartoBoard *b, u_int8_t stone, int explorationDepth) {
 
 int negamaxPickEvaluation(const QuartoBoard& b, int explorationDepth, int alpha, int beta) {
     if (explorationDepth <= 0) return 0;
+    u_int16_t availableStonesIte = b.availableStones;
 
     for (int stone = 0; stone < 16; stone++) {
-        if (b.availableStones[stone]) {
+        if (!(availableStonesIte & 1)) {
             int eval = -negamaxPlayEvaluation(b, stone, explorationDepth, -beta, -alpha);
 
             if (eval > alpha) {
@@ -88,8 +92,8 @@ int negamaxPickEvaluation(const QuartoBoard& b, int explorationDepth, int alpha,
                     return alpha;
                 }
             }
-
         }
+        availableStonesIte >>= 1;
     }
 
     return alpha;
@@ -109,13 +113,10 @@ int negamaxPlayEvaluation(const QuartoBoard& b, u_int8_t stone, int explorationD
     int max = explorationDepth;
     auto *hash_map_val = (u_int8_t *) malloc(sizeof(u_int8_t));
 
-    auto start = std::chrono::high_resolution_clock::now();
     if (hashMap->get(k, b, hash_map_val)) {
         max = *hash_map_val;
         lookedUpPos++;
     }
-    auto finish = std::chrono::high_resolution_clock::now();
-    timer += std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
     free(hash_map_val);
 
@@ -160,11 +161,6 @@ int negamaxPlayEvaluation(const QuartoBoard& b, u_int8_t stone, int explorationD
         offset++;
     }
 
-    start = std::chrono::high_resolution_clock::now();
-
     hashMap->put(k, b, alpha);
-
-    finish = std::chrono::high_resolution_clock::now();
-    timer += std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
     return alpha;
 }

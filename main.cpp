@@ -27,7 +27,7 @@ int main() {
 
 
     std::cout << "Best place : (" << place%5 << ";" << place/5 << ")" << "\nFound in " << end - start << "s\n";
-    std::cout << "Looked Up Pos : " << lookedUpPos << "\nExplored Pos : " << posExplored << "\nTime Spend with the hash map : " << timer/1000000000 << "s\n";
+    std::cout << "Looked Up Pos : " << lookedUpPos << "\nExplored Pos : " << posExplored << "\n";
     b->place(stoneint, place);
     b->print();
 

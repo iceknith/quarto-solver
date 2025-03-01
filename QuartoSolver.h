@@ -10,7 +10,6 @@ long int posExplored;
 long int prunedPos;
 long int lookedUpPos;
 
-double timer;
 HashMap *hashMap;
 
 int bestMovePick(const QuartoBoard *b);

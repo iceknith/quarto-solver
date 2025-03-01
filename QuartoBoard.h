@@ -13,6 +13,9 @@ std::string stoneToCharTable[16] = {
         "□bf","○bf","■bf","●bf"
 };
 
+u_int8_t countSetBits(u_int8_t n);
+
+
 class QuartoBoard {
 
     u_int32_t occupation;
@@ -26,8 +29,7 @@ class QuartoBoard {
     static u_int8_t bitboardTransposition(u_int32_t bitBoard, bool high_bits);
 
 public:
-    u_int8_t availableStoneCount;
-    bool availableStones[16];
+    u_int16_t availableStones;
 
     QuartoBoard();
     QuartoBoard(QuartoBoard const &b);
@@ -39,6 +41,7 @@ public:
     void place(u_int8_t stone, u_int8_t offset);
     bool hasWin();
     u_int32_t getKey() const;
+    u_int8_t number_of_turns() const;
 
     void print();
 };

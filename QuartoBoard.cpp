@@ -3,9 +3,7 @@
 
 QuartoBoard::QuartoBoard() {
     occupation = white = tall = full = circle = 0;
-    availableStoneCount = 16;
-
-     for (bool & availableStone : availableStones) availableStone = true;
+    availableStones = 0;
 }
 
 QuartoBoard::QuartoBoard(const QuartoBoard &b) {
@@ -14,18 +12,16 @@ QuartoBoard::QuartoBoard(const QuartoBoard &b) {
     white = b.white;
     tall = b.tall;
     full = b.full;
-
-    availableStoneCount = b.availableStoneCount;
-    for (int i = 0; i < 16; i++) availableStones[i] = b.availableStones[i];
+    availableStones = b.availableStones;
 }
 
 bool QuartoBoard::equals(const QuartoBoard &b) const {
     return
-        occupation == b.occupation &&
-        circle == b.circle &&
+        availableStones == b.availableStones &&
         white == b.white &&
         tall == b.tall &&
-        full == b.full
+        full == b.full &&
+        circle == b.circle // Circle is at the end, because it is used in the hasMap key
     ;
 }
 
@@ -55,7 +51,11 @@ void QuartoBoard::print() {
 
     // Print available Stones
     std::cout << "\nAvailable Stones:\n";
-    for (int i = 0; i < 16; i++) if (availableStones[i]) std::cout << stoneToCharTable[i] << " ";
+    u_int16_t availableStonesIte = availableStones;
+    for (int i = 0; i < 16; i++) {
+        if (!(availableStonesIte & 1)) std::cout << i << " ";
+        availableStonesIte >>= 1;
+    }
     std::cout << "\n";
 }
 
@@ -77,8 +77,7 @@ void QuartoBoard::place(u_int8_t stone, u_int8_t x, u_int8_t y) {
 
 void QuartoBoard::place(u_int8_t stone, u_int8_t offset) {
     // Remove stone from available list
-    availableStoneCount--;
-    availableStones[stone] = false;
+    availableStones |= 1 << stone;
 
     u_int32_t stonePlacement = 1 << offset;
 
@@ -152,4 +151,17 @@ u_int8_t QuartoBoard::bitboardTransposition(u_int32_t bitBoard, bool high_bits) 
     if (high_bits) bitBoard >>= 10;
 
     return bitBoard & 0xF | (bitBoard & 0x1E0) >> 1;
+}
+
+u_int8_t QuartoBoard::number_of_turns() const {
+    return 16 - countSetBits(availableStones);
+}
+
+u_int8_t countSetBits(u_int8_t n) {
+    u_int8_t count = 0;
+    while (n) {
+        count += n & 1;
+        n >>= 1;
+    }
+    return count;
 }
