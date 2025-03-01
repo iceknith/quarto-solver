@@ -2,7 +2,6 @@
 #define QUATRO_SOLVER_C___QUARTO_BOARD_H
 
 #include <iostream>
-#include "HashMap.h"
 
 #define width 5
 #define height 4
@@ -33,12 +32,13 @@ public:
     QuartoBoard();
     QuartoBoard(QuartoBoard const &b);
 
+    bool equals(QuartoBoard const &b) const;
     bool isFree(u_int8_t x, u_int8_t y) const;
     bool isFree(u_int8_t offset) const;
     void place(u_int8_t stone, u_int8_t x, u_int8_t y);
     void place(u_int8_t stone, u_int8_t offset);
     bool hasWin();
-    key getKey() const;
+    u_int32_t getKey() const;
 
     void print();
 };

@@ -19,6 +19,16 @@ QuartoBoard::QuartoBoard(const QuartoBoard &b) {
     for (int i = 0; i < 16; i++) availableStones[i] = b.availableStones[i];
 }
 
+bool QuartoBoard::equals(const QuartoBoard &b) const {
+    return
+        occupation == b.occupation &&
+        circle == b.circle &&
+        white == b.white &&
+        tall == b.tall &&
+        full == b.full
+    ;
+}
+
 void QuartoBoard::print() {
 
     // Print placed stones
@@ -130,19 +140,12 @@ bool QuartoBoard::hasWin() {
     return false;
 }
 
-key QuartoBoard::getKey() const {
-    return {
-            bitboardTransposition(occupation, false),
-            bitboardTransposition(occupation, true),
-            bitboardTransposition(circle, false),
-            bitboardTransposition(circle, true),
-            bitboardTransposition(white, false),
-            bitboardTransposition(white, true),
-            bitboardTransposition(tall, false),
-            bitboardTransposition(tall, true),
-            bitboardTransposition(full, false),
-            bitboardTransposition(full, true),
-    };
+u_int32_t QuartoBoard::getKey() const {
+    u_int32_t circle_parity = circle<<1;
+    circle_parity ^= circle_parity<<1;
+    circle_parity ^= circle_parity<<1;
+    circle_parity ^= circle_parity<<1;
+    return occupation | circle_parity;
 }
 
 u_int8_t QuartoBoard::bitboardTransposition(u_int32_t bitBoard, bool high_bits) {

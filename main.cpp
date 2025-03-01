@@ -3,6 +3,11 @@
 #include <ctime>
 #include <bitset>
 
+int test() {
+    std::cout << "hiii";
+    return 0;
+}
+
 int main() {
     auto *b = new QuartoBoard();
     b->place(3, 1, 2);
@@ -13,7 +18,7 @@ int main() {
     b->place(6, 3, 1);
 
 
-    hashMap = new HashMap(10000000);
+    hashMap = new HashMap(1048576);
 
     u_int8_t stoneint = 1;
     auto start = time(nullptr);

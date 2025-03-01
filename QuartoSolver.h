@@ -2,6 +2,7 @@
 #define QUATRO_SOLVER_C___QUARTOSOLVER_H
 
 #include "QuartoBoard.h"
+#include "HashMap.h"
 #include <iostream>
 
 long int finalPosExplored;

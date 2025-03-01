@@ -23,3 +23,15 @@ A stone is a 4 bit int that is encoded this way:
 2) 0 -> is black / 1 -> is white
 3) 0 -> is short / 1 -> is tall
 4) 0 -> has hole / 1 -> is full
+
+
+### Hash Map class
+
+Temporarly, a HashMap will not store keys, but will store the entire QuartoBoard in each cells
+
+But, to know where to store the HashMap, a temporary, non-unique, key has to be created, it is:
+`key = occupation | circle_parity`
+With `circle_parity = circle<<1 ^ circle<<2 ^ circle<<3 ^ circle<<4`
+
+It is important to note that `key` is a 32 bit integer, but that its bit over the 20th are all empty
+So the HashMap should not be greater than `2^20 = 1048576` items !

@@ -104,18 +104,19 @@ int negamaxPlayEvaluation(const QuartoBoard& b, u_int8_t stone, int explorationD
 
     u_int8_t offset = 0;
     QuartoBoard new_board;
-    key k = b.getKey();
+    uint32_t k = b.getKey();
 
     int max = explorationDepth;
+    auto *hash_map_val = (u_int8_t *) malloc(sizeof(u_int8_t));
 
     auto start = std::chrono::high_resolution_clock::now();
-    auto *hash_map_val = (u_int8_t *) malloc(sizeof(u_int8_t));
-    if (hashMap->get(k, hash_map_val)) {
+    if (hashMap->get(k, b, hash_map_val)) {
         max = *hash_map_val;
         lookedUpPos++;
     }
     auto finish = std::chrono::high_resolution_clock::now();
     timer += std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+
     free(hash_map_val);
 
     if (beta > max) {
@@ -161,7 +162,7 @@ int negamaxPlayEvaluation(const QuartoBoard& b, u_int8_t stone, int explorationD
 
     start = std::chrono::high_resolution_clock::now();
 
-    hashMap->put(k, alpha);
+    hashMap->put(k, b, alpha);
 
     finish = std::chrono::high_resolution_clock::now();
     timer += std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();

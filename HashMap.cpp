@@ -11,26 +11,16 @@ void HashMap::empty() {
     for (int i = 0; i < size; i++) data[i] = empty_cell;
 }
 
-void HashMap::put(key k, u_int8_t value) {
-    auto *usable_key = (u_int64_t *) k.value;
-    cell c = {k, value};
-    data[(*usable_key)%size] = c;
+void HashMap::put(u_int32_t k, const QuartoBoard& b, u_int8_t value) {
+    data[k%size] = {b, value};
 }
 
-bool HashMap::get(key k, u_int8_t *value) {
-    auto *usable_key = (u_int64_t *) k.value;
-    cell c = data[(*usable_key)%size];
+bool HashMap::get(u_int32_t k, const QuartoBoard& b, u_int8_t *value) {
+    cell c = data[k%size];
 
-    if (equal(c.k, k)){
+    if (b.equals(c.board)){
         *value = c.value;
         return true;
     }
     return false;
-}
-
-bool equal(key k1, key k2) {
-    for (int i = 0; i < 10; i++) {
-        if (k1.value[i] != k2.value[i]) return false;
-    }
-    return true;
 }
