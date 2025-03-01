@@ -1,0 +1,3 @@
+/home/iceknith/Documents/Programation/tests & funny buisness/quatro solver C++/cmake-build-debug/CMakeFiles/quatro_solver_C__.dir
+/home/iceknith/Documents/Programation/tests & funny buisness/quatro solver C++/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/iceknith/Documents/Programation/tests & funny buisness/quatro solver C++/cmake-build-debug/CMakeFiles/rebuild_cache.dir
